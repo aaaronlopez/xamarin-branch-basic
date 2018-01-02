@@ -21,6 +21,11 @@ namespace xamarintestvisual.Droid
 	DataScheme = "https",
 	DataHost = "jpvd.app.link")]
 
+	[IntentFilter(new[] { "android.intent.action.VIEW" },
+	Categories = new[] { "android.intent.category.DEFAULT", "android.intent.category.BROWSABLE" },
+	DataScheme = "https",
+	DataHost = "jpvd-alternate.app.link")]
+
 	public class MainActivity : Activity, IBranchSessionInterface
 	{
 
@@ -41,13 +46,13 @@ namespace xamarintestvisual.Droid
 
 		public void InitSessionComplete(Dictionary<string, object> data)
 		{
-			var intent = new Intent(this, typeof(BranchActivity));
-			intent.PutExtra("BranchData", JsonConvert.SerializeObject(data));
+			//var intent = new Intent(this, typeof(BranchActivity));
+			//intent.PutExtra("BranchData", JsonConvert.SerializeObject(data));
 
             Console.WriteLine("DATADATADATA: " + JsonConvert.SerializeObject(data));
             //LogMessage("DATATATATTATTA: ");
 
-			StartActivity(intent);
+			//StartActivity(intent);
 		}
 
 		public void SessionRequestError(BranchError error)

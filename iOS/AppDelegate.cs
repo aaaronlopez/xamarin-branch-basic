@@ -1,7 +1,7 @@
 ﻿using Foundation;
 using UIKit;
-//using BranchXamarinSDK;
-//using BranchXamarinSDK.iOS;
+using BranchXamarinSDK;
+using BranchXamarinSDK.iOS;
 using System;
 
 namespace xamarintestvisual.iOS
@@ -9,7 +9,7 @@ namespace xamarintestvisual.iOS
     // The UIApplicationDelegate for the application. This class is responsible for launching the
     // User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
     [Register("AppDelegate")]
-    public class AppDelegate : UIApplicationDelegate
+    public class AppDelegate : UIApplicationDelegate, IBranchBUOSessionInterface
     {
         // class-level declarations
 
@@ -24,53 +24,53 @@ namespace xamarintestvisual.iOS
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
 			BranchIOS.Debug = true;
-			BranchIOS.Init("key_live_bjrJcLZjIEXYHX61jgg4ZojlxygdIyWe", launchOptions, (BranchXamarinSDK.IBranchSessionInterface)this);
+			BranchIOS.Init("key_live_bjrJcLZjIEXYHX61jgg4ZojlxygdIyWe", launchOptions, this);
 
             return true;
         }
 
-		//// Called when the app is opened via URI scheme
-		//public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
-		//{
-		//	return BranchIOS.getInstance().OpenUrl(url);
-		//}
+		// Called when the app is opened via URI scheme
+		public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
+		{
+			return BranchIOS.getInstance().OpenUrl(url);
+		}
 
-		//// Called when the app is opened from a Universal Link
-		//public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity,
-		//			  UIApplicationRestorationHandler completionHandler)
-		//{
-		//	return BranchIOS.getInstance().ContinueUserActivity(userActivity);
-		//}
+		// Called when the app is opened from a Universal Link
+		public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity,
+					  UIApplicationRestorationHandler completionHandler)
+		{
+			return BranchIOS.getInstance().ContinueUserActivity(userActivity);
+		}
 
-		//// Called when the app receives a push notification
-		//public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
-		//{
-		//	BranchIOS.getInstance().HandlePushNotification(userInfo);
-		//}
+		// Called when the app receives a push notification
+		public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+		{
+			BranchIOS.getInstance().HandlePushNotification(userInfo);
+		}
 
-		//// Called when the Branch initialization is completed
-		//// Put deep-linking logic in this method
-		//public void InitSessionComplete(BranchUniversalObject buo, BranchLinkProperties blp)
-		//{
-		//	NSObject[] keys = {
-		//		NSObject.FromObject("+is_first_session")
-		//	};
+		// Called when the Branch initialization is completed
+		// Put deep-linking logic in this method
+		public void InitSessionComplete(BranchUniversalObject buo, BranchLinkProperties blp)
+		{
+			NSObject[] keys = {
+				NSObject.FromObject("+is_first_session")
+			};
 
-		//	NSObject[] values = { NSObject.FromObject(0) };
-		//	if (buo.metadata.ContainsKey("+is_first_session"))
-		//	{
-		//		values[0] = NSObject.FromObject(buo.metadata["+is_first_session"]);
-		//	}
+			NSObject[] values = { NSObject.FromObject(0) };
+			if (buo.metadata.ContainsKey("+is_first_session"))
+			{
+				values[0] = NSObject.FromObject(buo.metadata["+is_first_session"]);
+			}
 
-		//	NSDictionary nsData = NSDictionary.FromObjectsAndKeys(values, keys);
-		//}
+			NSDictionary nsData = NSDictionary.FromObjectsAndKeys(values, keys);
+		}
 
-		//// Called when there is an error initializing Branch
-		//public void SessionRequestError(BranchError error)
-		//{
-		//	Console.WriteLine("Branch error: " + error.ErrorCode);
-		//	Console.WriteLine(error.ErrorMessage);
-		//}
+		// Called when there is an error initializing Branch
+		public void SessionRequestError(BranchError error)
+		{
+			Console.WriteLine("Branch error: " + error.ErrorCode);
+			Console.WriteLine(error.ErrorMessage);
+		}
 
         public override void OnResignActivation(UIApplication application)
         {
